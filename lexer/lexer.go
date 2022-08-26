@@ -2,6 +2,9 @@ package lexer
 
 const LPAREN = "{"
 const RPAREN = "}"
+const LBRAKET = "["
+const RBRAKET = "]"
+const COLON = ":"
 
 func Tokenize(input string) []string {
 	var tokenArray []string
@@ -9,9 +12,6 @@ func Tokenize(input string) []string {
 	midJson := true
 
 	for midJson {
-		if position == (len(input) - 1) {
-			break
-		}
 		char := input[position]
 		switch char {
 		case '{':
@@ -20,15 +20,40 @@ func Tokenize(input string) []string {
 		case '}':
 			tokenArray = append(tokenArray, RPAREN)
 			position += 1
+		case '[':
+			tokenArray = append(tokenArray, LBRAKET)
+			position += 1
+		case ']':
+			tokenArray = append(tokenArray, RBRAKET)
+			position += 1
+		case ':':
+			tokenArray = append(tokenArray, COLON)
+			position += 1
+
 		default:
 			if isLetter(char) {
 				currentPosition := position
+				readPosition := position + 1
 				for isLetter(input[position]) {
-					position += 1
+					if readPosition > len(input) {
+						readPosition = 0
+					}
+					if isLetter(input[readPosition]) {
+						position += 1
+						readPosition += 1
+
+					} else {
+						position += 1
+						tokenArray = append(tokenArray, input[currentPosition:position])
+						break
+					}
+
 				}
-				tokenArray = append(tokenArray, input[currentPosition:position])
 			}
 
+		}
+		if position >= len(input) {
+			midJson = false
 		}
 	}
 	return tokenArray

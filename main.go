@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	l := lexer.Tokenize("{test}")
+	l := lexer.Tokenize("{test:test}")
 	fmt.Println(l)
 
 }
