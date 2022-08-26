@@ -5,6 +5,7 @@ const RPAREN = "}"
 const LBRAKET = "["
 const RBRAKET = "]"
 const COLON = ":"
+const COMMA = ","
 
 func Tokenize(input string) []string {
 	var tokenArray []string
@@ -28,6 +29,9 @@ func Tokenize(input string) []string {
 			position += 1
 		case ':':
 			tokenArray = append(tokenArray, COLON)
+			position += 1
+		case ',':
+			tokenArray = append(tokenArray, COMMA)
 			position += 1
 
 		default:
